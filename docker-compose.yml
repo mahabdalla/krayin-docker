@@ -4,12 +4,18 @@ services:
       args:
         container_project_path: /var/www/html/
         uid: 1519
-        user: "www-data" # نستخدم المستخدم الموجود في الصورة
+        user: "www-data"
       context: .
       dockerfile: ./Dockerfile
     image: krayin-php-apache
     volumes:
-      - ./workspace/:/var/www/html/
+      # ربط مجلد krayin من جهازك إلى نفس المسار اللي أباتشي يتوقعه
+      - ./workspace/krayin:/var/www/html/krayin
+    ports:
+      - "8080:80" # ممكن تغير البورت إذا لزم
+    depends_on:
+      - krayin-mysql
+      - krayin-redis
 
   krayin-mysql:
     image: mysql:8.0
@@ -33,8 +39,12 @@ services:
       PMA_USER: root
       PMA_PASSWORD: root
       UPLOAD_LIMIT: 512M
+    ports:
+      - "8081:80"
 
   krayin-mailhog:
     image: mailhog/mailhog
     logging:
       driver: 'none'
+    ports:
+      - "8025:8025"
