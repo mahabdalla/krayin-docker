@@ -4,7 +4,7 @@ services:
       args:
         container_project_path: /var/www/html/
         uid: 1519
-        user: "www-data"   # استبدلنا $USER بقيمة مباشرة
+        user: "www-data" # نستخدم المستخدم الموجود في الصورة
       context: .
       dockerfile: ./Dockerfile
     image: krayin-php-apache
