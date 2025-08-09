@@ -43,8 +43,8 @@ ARG user
 # setting work directory
 WORKDIR $container_project_path
 
-# adding user
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
+# adding user only if not exists
+RUN id -u $user 2>/dev/null || useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
